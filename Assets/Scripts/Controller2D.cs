@@ -4,7 +4,7 @@ using System.Collections;
 [RequireComponent(typeof(BoxCollider2D))]
 public class Controller2D : MonoBehaviour {
 
-	BoxCollider2D boxCollider;
+	[HideInInspector]public BoxCollider2D boxCollider;
 	RaycastOrigins rayOrigins;
 	public CollisionInfo collisions;
 
@@ -17,10 +17,13 @@ public class Controller2D : MonoBehaviour {
 	float verticalRaySpacing;
 	const float skinWidth = 0.015f;
 
-	Vector2 playerInput;
+	[HideInInspector]public Vector2 playerInput;
 
-	void Start () {
+	void Awake () {
 		boxCollider = GetComponent<BoxCollider2D> ();
+	}
+
+	void Start(){
 		CalculateRaySpacing ();
 	}
 

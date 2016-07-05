@@ -13,12 +13,16 @@ public class InputController : MonoBehaviour {
 		player.input = new Vector2 (Input.GetAxisRaw ("Horizontal"), Input.GetAxisRaw ("Vertical"));
 
 		if (player.mayMove) {
+
 			if (Input.GetKeyDown (KeyCode.X)) {
+				player.OnAttackKey ();
+			}
+
+			if (Input.GetKeyDown (KeyCode.Z)) {
 				player.OnEvadeKey ();
 			}
 
 			if (Input.GetKeyDown (KeyCode.Space)) {
-				print ("Space Pressed");
 				player.OnSpaceDown ();
 			}
 
