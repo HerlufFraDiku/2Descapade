@@ -8,13 +8,15 @@ public class Controller2D : MonoBehaviour {
 	RaycastOrigins rayOrigins;
 	public CollisionInfo collisions;
 
-	const float skinWidth = 0.015f;
-
+	public LayerMask climbable;
 	public LayerMask collisionMask;
+
 	[Range(2, 256)] public int horizontalRayCount = 4;
 	[Range(2, 256)] public int verticalRayCount = 4;
 	float horizontalRaySpacing;
 	float verticalRaySpacing;
+	const float skinWidth = 0.015f;
+
 	Vector2 playerInput;
 
 	void Start () {
@@ -28,20 +30,37 @@ public class Controller2D : MonoBehaviour {
 		collisions.Reset ();
 		playerInput = input;
 
-		if (!collisions.onRope) {
-			if (velocity.x != 0) {
-				HorizontalCollisions (ref velocity);
-			}
+		CheckForRope (velocity);
 
-			if (velocity.y != 0) {
-				VerticalCollisions (ref velocity);
-			}
+		if (velocity.x != 0) {
+			HorizontalCollisions (ref velocity);
 		}
 
-		if (collisions.onRope) {
-			transform.Translate(new Vector3(0, velocity.y, 0));
+		if (velocity.y != 0) {
+			VerticalCollisions (ref velocity);
+		}
+
+		if (collisions.climbing) {
+			velocity.x = 0;
+		}
+
+		transform.Translate (velocity);
+	}
+
+	void CheckForRope(Vector3 velocity){
+		Bounds bounds = boxCollider.bounds;
+		float yOffset = (playerInput.y == -1 && !collisions.climbing) ? -bounds.size.y / 2 : 0f;
+		Vector2 rayOrigin = new Vector2 (bounds.center.x, bounds.center.y + yOffset);
+		Debug.DrawRay (rayOrigin, Vector2.down * bounds.size.y / 2f, Color.blue);
+		Collider2D climbableHit = Physics2D.OverlapCircle(rayOrigin, bounds.size.y / 2f, climbable);
+
+		if (climbableHit) {
+			if (!collisions.climbing && playerInput.y != 0) {
+				transform.position = new Vector3 (climbableHit.transform.position.x, transform.position.y, 0);
+				collisions.climbing = true;
+			}
 		} else {
-			transform.Translate (velocity);
+			collisions.climbing = false;
 		}
 	}
 
@@ -61,14 +80,6 @@ public class Controller2D : MonoBehaviour {
 					if (hit.distance == 0) {
 						continue;
 					}
-				}
-
-				if (hit.collider.tag == "Climpable") {
-					if (playerInput.y == 1 && !collisions.onRope) {
-						collisions.onRope = true;
-						transform.position = new Vector3 (hit.transform.position.x, transform.position.y, 0);
-					}
-					continue;
 				}
 
 				velocity.x = (hit.distance - skinWidth) * directionX;
@@ -92,18 +103,13 @@ public class Controller2D : MonoBehaviour {
 			Debug.DrawRay (rayOrigin, Vector2.up * directionY * rayLength, Color.red);
 
 			if (hit) {
+				if (collisions.climbing) {
+					continue;
+				}
 				if (hit.collider.tag == "Jumpable") {
 					if (directionY == 1 || hit.distance == 0 || (playerInput.y == -1 && Input.GetKeyDown(KeyCode.Space))) {
 						continue;
 					}
-				}
-
-				if (hit.collider.tag == "Climpable") {
-					if (playerInput.y == 1 && !collisions.onRope) {
-						collisions.onRope = true;
-						transform.position = new Vector3 (hit.transform.position.x, transform.position.y, 0);
-					}
-					continue;
 				}
 
 				velocity.y = (hit.distance - skinWidth) * directionY;
@@ -143,7 +149,8 @@ public class Controller2D : MonoBehaviour {
 	public struct CollisionInfo{
 		public bool above, below;
 		public bool left, right;
-		public bool onRope;
+		public bool rope;
+		public bool climbing;
 
 		public void Reset(){
 			above = below = false;

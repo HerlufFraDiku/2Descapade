@@ -1,7 +1,7 @@
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2008
 
-Project("{429F82F9-D92F-5B5F-426E-AC1607E5A601}") = "2DEscapade", "Assembly-CSharp.csproj", "{53696243-BF4D-20B8-CA8A-403B27737A21}"
+Project("{821A699E-DF80-5F5C-0D84-0ACC1101B33C}") = "2Descapade", "Assembly-CSharp.csproj", "{83BE0D6A-16F9-B438-C257-2E33D397B2A2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -9,10 +9,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{53696243-BF4D-20B8-CA8A-403B27737A21}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{53696243-BF4D-20B8-CA8A-403B27737A21}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{53696243-BF4D-20B8-CA8A-403B27737A21}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{53696243-BF4D-20B8-CA8A-403B27737A21}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83BE0D6A-16F9-B438-C257-2E33D397B2A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83BE0D6A-16F9-B438-C257-2E33D397B2A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83BE0D6A-16F9-B438-C257-2E33D397B2A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83BE0D6A-16F9-B438-C257-2E33D397B2A2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
